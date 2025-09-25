@@ -14,14 +14,11 @@ import com.silvacorporation_apps.deliveryadministration.R;
 import com.silvacorporation_apps.deliveryadministration.dto.AdminDto;
 import com.silvacorporation_apps.deliveryadministration.interfaces.CRUDInterface;
 import com.silvacorporation_apps.deliveryadministration.model.AuthResponse;
-import com.silvacorporation_apps.deliveryadministration.model.Usuario;
-import com.silvacorporation_apps.deliveryadministration.utils.Constants;
+import com.silvacorporation_apps.deliveryadministration.network.ApiClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -49,46 +46,51 @@ public class RegisterActivity extends AppCompatActivity {
                         editTextPassword.getText().toString().trim(),
                         editTextFullName.getText().toString().trim(),
                         editTextPhone.getText().toString().trim(),
-                        editTextAddress.getText().toString().trim()
+                        editTextAddress.getText().toString().trim(),
+                        "ADMIN" // 👈 ahora lo mandamos explícito
                 );
+
                 register(dto);
             }
         });
     }
 
     private void register(AdminDto dto) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        crudInterface = retrofit.create(CRUDInterface.class);
+        crudInterface = ApiClient.getClient().create(CRUDInterface.class);
 
         Call<AuthResponse> call = crudInterface.register(dto);
+        Log.d("REGISTER", "Enviando registro con email: " + dto.getEmail());
+
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                Log.d("REGISTER", "Código HTTP: " + response.code());
+
                 if (!response.isSuccessful()) {
+                    Log.e("REGISTER", "Error response: " + response.message());
                     Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 AuthResponse authResponse = response.body();
                 if (authResponse != null) {
+                    Log.d("REGISTER", "Respuesta: " + authResponse.getMessage() + " - Usuario: " + authResponse.getUser());
                     Toast.makeText(getApplicationContext(),
                             authResponse.getMessage() + " (" + authResponse.getUser().getFullName() + ")",
                             Toast.LENGTH_LONG).show();
 
                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                     finish();
+                } else {
+                    Log.e("REGISTER", "Respuesta nula del servidor");
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Log.e("REGISTER", "Fallo en la llamada", t);
                 Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
     }
 }

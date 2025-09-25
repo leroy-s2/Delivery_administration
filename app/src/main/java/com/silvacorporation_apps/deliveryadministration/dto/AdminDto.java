@@ -9,18 +9,20 @@ public class AdminDto implements Serializable {
     private String fullName;
     private String phone;
     private String address;
+    private String role; // 👈 nuevo campo
 
     // Constructor vacío
     public AdminDto() {
     }
 
     // Constructor con parámetros
-    public AdminDto(String email, String password, String fullName, String phone, String address) {
+    public AdminDto(String email, String password, String fullName, String phone, String address, String role) {
         this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
+        this.role = role;
     }
 
     // Getters y Setters
@@ -62,5 +64,13 @@ public class AdminDto implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

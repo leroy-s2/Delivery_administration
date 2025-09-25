@@ -1,6 +1,7 @@
 package com.silvacorporation_apps.deliveryadministration.interfaces;
 
 import com.silvacorporation_apps.deliveryadministration.dto.AdminDto;
+import com.silvacorporation_apps.deliveryadministration.dto.RestaurantDto;
 import com.silvacorporation_apps.deliveryadministration.model.AuthResponse;
 
 import retrofit2.Call;
@@ -14,4 +15,6 @@ public interface CRUDInterface {
 
     @POST("auth/login")
     Call<AuthResponse> login(@Body AdminDto dto);
+    @POST("restaurants")
+    Call<RestaurantDto> createRestaurant(@Body RestaurantDto dto);
 }
