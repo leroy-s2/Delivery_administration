@@ -1,47 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="12dp"
-    android:background="@drawable/bg_item_card"
-    android:layout_marginBottom="8dp">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/ivMenuImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_restaurant_placeholder"
-        android:layout_marginEnd="12dp"/>
+    <!-- TopBar con el menú -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMenu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:title="Platos"
+        android:titleTextColor="@android:color/white"
+        app:menu="@menu/menu_restaurants" />
 
+    <!-- Contenido de cada Menu Item -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/bg_item_card"
+        android:layout_margin="8dp">
 
-        <TextView
-            android:id="@+id/tvMenuName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre del Plato"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
+        <ImageView
+            android:id="@+id/ivMenuImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_restaurant_placeholder"
+            android:layout_marginEnd="12dp"/>
 
-        <TextView
-            android:id="@+id/tvMenuPrice"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="$0.00"
-            android:textColor="@android:color/holo_green_dark"
-            android:textSize="14sp"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvMenuCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Categoría"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/tvMenuName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre del Plato"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tvMenuPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tvMenuCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoría"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -15,7 +15,7 @@ public class ApiClient {
     private static final String BASE_URL = "http://10.0.2.2:9091/api/v1/";
     private static Retrofit retrofit;
 
-    // 🔹 Gson estático para poder usarlo en cualquier parte
+
     private static final Gson gson = new GsonBuilder()
             .setLenient()
             .create();
@@ -40,7 +40,6 @@ public class ApiClient {
         return retrofit;
     }
 
-    // 🔹 Nuevo método
     public static Gson getGson() {
         return gson;
     }

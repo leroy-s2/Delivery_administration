@@ -1,6 +1,7 @@
 package com.silvacorporation_apps.deliveryadministration.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.silvacorporation_apps.deliveryadministration.R;
 import com.silvacorporation_apps.deliveryadministration.dto.MenuItemDto;
+import com.silvacorporation_apps.deliveryadministration.ui.OrderItemsActivity;
 
 import java.util.List;
 
@@ -50,6 +52,14 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
         } else {
             holder.ivMenuImage.setImageResource(R.drawable.ic_restaurant_placeholder);
         }
+
+        // 🚀 Clic en un item -> abrir OrderItemsActivity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, OrderItemsActivity.class);
+            intent.putExtra("menuItemId", menu.getId());
+            context.startActivity(intent);
+        });
+
     }
 
     @Override

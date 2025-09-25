@@ -29,6 +29,7 @@
         <activity android:name=".activities.RegisterActivity"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".fragments.RestaurantDetailActivity" />
+        <activity android:name=".ui.OrderItemsActivity"/>
 
     </application>
 </manifest>
