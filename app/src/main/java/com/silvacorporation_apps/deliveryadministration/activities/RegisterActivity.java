@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.silvacorporation_apps.deliveryadministration.MainActivity;
 import com.silvacorporation_apps.deliveryadministration.R;
 import com.silvacorporation_apps.deliveryadministration.dto.AdminDto;
 import com.silvacorporation_apps.deliveryadministration.interfaces.CRUDInterface;
@@ -25,42 +23,40 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
-    MaterialButton buttonLogin;
-    TextView textViewRegister;
+    TextInputEditText editTextFullName, editTextEmail, editTextPassword, editTextPhone, editTextAddress;
+    MaterialButton buttonRegister;
     CRUDInterface crudInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
+        editTextFullName = findViewById(R.id.editTextFullName);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
-        buttonLogin = findViewById(R.id.buttonLogin);
-        textViewRegister = findViewById(R.id.textViewRegister);
+        editTextPhone = findViewById(R.id.editTextPhone);
+        editTextAddress = findViewById(R.id.editTextAddress);
+        buttonRegister = findViewById(R.id.buttonRegister);
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AdminDto dto = new AdminDto(
                         editTextEmail.getText().toString().trim(),
                         editTextPassword.getText().toString().trim(),
-                        null, null, null
+                        editTextFullName.getText().toString().trim(),
+                        editTextPhone.getText().toString().trim(),
+                        editTextAddress.getText().toString().trim()
                 );
-                login(dto);
+                register(dto);
             }
-        });
-
-        textViewRegister.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
         });
     }
 
-    private void login(AdminDto dto) {
+    private void register(AdminDto dto) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -68,31 +64,23 @@ public class LoginActivity extends AppCompatActivity {
 
         crudInterface = retrofit.create(CRUDInterface.class);
 
-        Call<AuthResponse> call = crudInterface.login(dto);
+        Call<AuthResponse> call = crudInterface.register(dto);
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Credenciales inválidas", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 AuthResponse authResponse = response.body();
-                if (authResponse != null && authResponse.getUser() != null) {
-                    if ("ADMIN".equals(authResponse.getUser().getRole())) {
-                        Toast.makeText(getApplicationContext(),
-                                "Bienvenido Admin " + authResponse.getUser().getFullName(),
-                                Toast.LENGTH_LONG).show();
+                if (authResponse != null) {
+                    Toast.makeText(getApplicationContext(),
+                            authResponse.getMessage() + " (" + authResponse.getUser().getFullName() + ")",
+                            Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("usuario", authResponse.getUser());
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "Acceso denegado. Solo admins pueden ingresar.",
-                                Toast.LENGTH_LONG).show();
-                    }
+                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    finish();
                 }
             }
 
