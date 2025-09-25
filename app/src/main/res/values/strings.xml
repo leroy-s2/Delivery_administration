@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Delivery administration</string>
+    <!-- Login Activity -->
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="register_prompt">¿No tienes cuenta? Regístrate</string>
+    <!-- Register Activity -->
+    <string name="register_title">Registro</string>
+    <string name="full_name">Nombre Completo</string>
+    <string name="phone">Teléfono</string>
+    <string name="address">Dirección</string>
+    <string name="register">Registrarse</string>
+    <string name="login_prompt">¿Ya tienes cuenta? Inicia sesión</string>
+    <!-- Main Activity -->
+    <string name="restaurants_title">Restaurantes</string>
+    <string name="search_restaurants">Buscar restaurantes...</string>
+</resources>
